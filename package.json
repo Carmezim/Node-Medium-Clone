@@ -1,7 +1,7 @@
 {
-  "name": "conduit-node",
+  "name": "node-medium-clone",
   "version": "1.0.0",
-  "description": "conduit on node",
+  "description": "Medium clone in node",
   "main": "app.js",
   "scripts": {
     "start": "node ./app.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gothinkster/productionready-node-api.git"
+    "url": "https://github.com/carmezim/node-medium-clone"
   },
   "license": "ISC",
   "dependencies": {
