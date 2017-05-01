@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const crypto = require('crypto');
-
+const jwt = require('jasonwebtoken');
+const secret = require('../config').secret;
 
 // Schema setup
 const UserSchema = new mongoose.Schema({
@@ -22,10 +23,28 @@ UserSchema.methods.setPassword = (password) => {
 
 // Password validation
 UserSchema.methods.validPassword = (password) => {
-  let hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+  const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
   return this.hash === hash;
 };
 
+// Generating JWT
+UserSchema.methods.generateJWT = () => {
+  const today = new Date();
+  let exp = new Date(today);
+  exp.setDate(today.getDate() + 60);
+
+  return jwt.sign({
+    id: this._id,
+    username: this.username,
+    exp: parseInt(exp.getTime() / 1000),
+  }, secret);
+};
+// Generating JSON auth
+UserSchema.methods.toAuthJSON = () => ({
+  username: this.username,
+  email: this.email,
+  token: this.generateJWT()
+});
 
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
