@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const crypto = require('crypto');
-const jwt = require('jasonwebtoken');
+const jwt = require('jsonwebtoken');
 const secret = require('../config').secret;
 
 // Schema setup
@@ -39,6 +39,7 @@ UserSchema.methods.generateJWT = () => {
     exp: parseInt(exp.getTime() / 1000),
   }, secret);
 };
+
 // Generating JSON auth
 UserSchema.methods.toAuthJSON = () => ({
   username: this.username,

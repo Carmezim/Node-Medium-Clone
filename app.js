@@ -9,6 +9,7 @@ const fs = require('fs'),
       passport = require('passport'),
       errorhandler = require('errorhandler'),
       mongoose = require('mongoose');
+      
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -37,6 +38,8 @@ if(isProduction){
   mongoose.connect('mongodb://localhost/conduit');
   mongoose.set('debug', true);
 }
+// registering user model
+require('./models/User');
 
 app.use(require('./routes'));
 
