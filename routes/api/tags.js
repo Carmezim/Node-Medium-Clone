@@ -1,6 +1,6 @@
-const router = require('exporess').Router();
+const router = require('express').Router();
 const mongoose = require('mongoose');
-const Article = require.model('Article');
+const Article = mongoose.model('Article');
 
 // return a list of tags
 router.get('/', function(req, res, next) {
