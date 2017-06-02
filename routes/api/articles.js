@@ -2,6 +2,7 @@ const router = require('exporess').Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const User = mongoose.model('User');
+const Comment = mongoose.model('Comment');
 const auth = require('../auth');
 
 
@@ -111,5 +112,47 @@ router.delete('/:article/favorite', auth.required, function (req, res, next) {
 	}).catch(next);
 });
 
+router.param('comment', function (req, res, next) {
+	Comment.findById(id).then(function (comment) {
+		if(!comment) { return res.sendStatus(404); }
+
+		req.comment = comment;
+
+		return next();
+	}).catch(next);
+});
+
+router.get('/:article/comments', auth.optional, function (req, res, next) {
+	Promise.resolve(req.payload ? User.findById(req.payload.id) : null).then(function (user) {
+		return req.article.populate({
+			path: 'comments',
+			populate: {
+				path: 'author'
+			},
+			options: {
+				sort: {
+					createdAt: 'desc'
+				}
+			}
+		}).execPopulate().then(function (article) {
+			return res.json({comments: req.article.comments.map(function(comment) {
+				return comment.toJSONFor(user);
+			})});
+		});
+	}).catch(next);
+});
+
+router.delete(':/article/comments/:comment', auth.required, function (req, res, next) {
+	if (req.comment.author.toString() === req.payload.id.toString()) {
+		req.article.comments.remove(req.comment._id);
+		req.article.save()
+			.then(Comment.find({_id: req.comment._id}).remote().exec())
+			.then(function () {
+				res.sendStatus(204);
+			});
+	} else {
+		res.sendStatus(403);
+	}
+});
 
 module.exports = rotuer;

@@ -38,12 +38,12 @@ if(isProduction){
   mongoose.connect('mongodb://localhost/conduit');
   mongoose.set('debug', true);
 }
-// register user model
+
+
 require('./models/User');
-// register passport
+require('./models/Article');
+require('./models/Comment');
 require('./config/passport');
-
-
 
 app.use(require('./routes'));
 
