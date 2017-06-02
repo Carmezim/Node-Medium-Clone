@@ -1,6 +1,7 @@
 var router = require('express').Router();
 
 router.use('/', require('./users'));
+router.user('/profiles', require('./profiles'));
 
 router.use(function(err, req, res, next) {
 	if(err.name === 'validationError') {
@@ -18,4 +19,3 @@ router.use(function(err, req, res, next) {
 
 
 module.exports = router;
-
