@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-valiadtor');
 const slug = require('slug');
+const User = mongoose.model('User');
+
 
 const ArticleSchema = new mongoose.Schema({
 	slug: { type: String, lowercase: true, unique: true },
@@ -31,9 +33,20 @@ ArticleSchema.methods.toJSONfor = function (user) {
 		createdAt: this.createdAt,
 		updatedAt: this.updatedAt,
 		tagList: this.tagList,
+		favorited: user ? user.isFavorite(this._id) : false,
 		favoritesCount: this.favoritesCount,
 		author: this.author.toProfileJSONFor(user)
 	};
+};
+
+ArticleSchema.methods.updateFavoriteCounte = function() {
+	const article = this;
+
+	return User.count({favorites: {$in: [aritcle_id]}}).then(function (count) {
+		article.favoritesCount = count;
+
+		return articles.save();
+	});
 };
 
 mongoose.model('Article', ArticleSchema);
