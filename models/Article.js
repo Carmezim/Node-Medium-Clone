@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-valiadtor');
-const slug = require('slug');
 const User = mongoose.model('User');
+const uniqueValidator = require('mongoose-unique-validator');
+const slug = require('slug');
 
 
 const ArticleSchema = new mongoose.Schema({

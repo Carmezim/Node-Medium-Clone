@@ -73,4 +73,4 @@ UserSchema.methods.unfavorite = function (id) {
 
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
-mongoose.model('user', UserSchema);
+mongoose.model('User', UserSchema);

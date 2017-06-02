@@ -1,4 +1,4 @@
-const router = require('exporess').Router();
+const router = require('express').Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const User = mongoose.model('User');
@@ -155,4 +155,4 @@ router.delete(':/article/comments/:comment', auth.required, function (req, res, 
 	}
 });
 
-module.exports = rotuer;
+module.exports = router;
